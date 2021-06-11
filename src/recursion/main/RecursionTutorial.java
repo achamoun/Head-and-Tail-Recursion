@@ -1,13 +1,28 @@
 package recursion.main;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * this class explains the difference between tail and head recursion with
  * simple examples. run the main method and notice the results of the print out
  * statements.
+ * 
+ * The scale for tail and head recursion is where the recursive call in the
+ * function is.
+ * 
+ * If the recursive call is after all other statements in the function, we have
+ * a tail recursion. If the recursive call is before all other statements in the
+ * function, we have a head recursion.
+ * 
+ * Benefits: 
+ * Tail recursion: if you want to call the function several times
+ * recursively and execute statements before each call. Statements will be
+ * executed in the same direction of the function recursive calls. Statements of
+ * the first called function until the last one. Head recursion: if you want to
+ * call the function several times recursively but execute the statements after
+ * all calls are made. Statements will be executed in the opposite direction of
+ * the function recursive calls. Statements of the last called function until
+ * the first one.
  * 
  * @author aboud
  *
@@ -17,39 +32,48 @@ public class RecursionTutorial {
 	/**
 	 * tail recursion executes statements first and calls the method in the end.
 	 * 
-	 * @param number
+	 * @param index
 	 */
-	public void tailRecursion(int number, int[] arr) {
-		System.out.print("tail recursion number " + number + " has been called \n");
+	public void tailRecursion(int index, int[] arr) {
+		System.out.print("tail recursion number " + index + " has been called \n");
 
-		if (number >= arr.length-1) {
-			System.out.print("retrun from tail recursion number " + number + "\n");
+		if (index >= arr.length) {
+			System.out.print("retrun from tail recursion number " + index + "\n");
+			System.out.print(
+					"Notice that each statement has been executed before " + "the next recursive call was made" + "\n");
+
 			return;
 		}
 
-		arr[number] = arr.length - number;
+		// execute a statement
+		arr[index] = index;
+		System.out.print("tail recursion number " + index + ", adding " + index + " to the list \n");
 
-		System.out.print("tail recursion number " + number + ", adding " + number + " to the list \n");
-		tailRecursion(++number, arr);
+		// recursive call in the end
+		tailRecursion(index + 1, arr);
 	}
 
 	/**
 	 * head recursion calls the method before executing the statements.
 	 * 
-	 * @param number
+	 * @param index
 	 */
-	public void headRecursion(int number, int[] arr) {
-		System.out.print("head recursion number " + number + " has been called \n");
+	public void headRecursion(int index, int[] arr) {
+		System.out.print("head recursion number " + index + " has been called \n");
 
-		if (number >= arr.length - 1) {
-			System.out.print("retrun from head recursion number " + number + "\n");
+		if (index >= arr.length) {
+			System.out.print("retrun from head recursion number " + index + "\n");
+			System.out.print("Notice that all recursive calls has been made, now the "
+					+ "statements will be executed backwards" + "\n");
 			return;
 		}
-		headRecursion(++number, arr);
 
-		System.out.print("head recursion number " + number + ", adding " + number + " to the list \n");
-		arr[number] = arr.length - number;
+		// recursive call at first
+		headRecursion(index + 1, arr);
 
+		// execute a statement
+		arr[index] = index;
+		System.out.print("head recursion number " + index + ", adding " + index + " to the list \n");
 	}
 
 	public static void main(String[] args) {
@@ -61,17 +85,15 @@ public class RecursionTutorial {
 
 		int[] test = new int[6];
 		tutorial.tailRecursion(0, test);
-		System.out.print( Arrays.toString(test) + "\n");
+		System.out.print(Arrays.toString(test) + "\n");
 		System.out.print("\n");
 
 		// notice that the method will be called 5 times and then the statements will be
-		// executed backwards(the fifth called method will run its statements first,
-		// then the
-		// forth and so on)
+		// executed backwards(the last called method will run its statements first)
 
 		int[] test1 = new int[6];
 		tutorial.headRecursion(0, test1);
-		System.out.print(Arrays.toString(test1)  + "\n");
+		System.out.print(Arrays.toString(test1) + "\n");
 
 	}
 
